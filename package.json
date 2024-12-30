@@ -2,7 +2,7 @@
 	"name": "server-cache",
 	"version": "1.0.0",
 	"description": "",
-	"main": "./src/app.ts",
+	"main": "./dist/app.js",
 	"scripts": {
     "clean": "rm -rf dist",
 		"build": "npm run clean && npx tsc",
@@ -10,10 +10,10 @@
 		"dev": "nodemon src/app.ts"
 	},
 	"_moduleAliases": {
-		"@utils": "dist/utils/",
-		"@libs": "dist/libs/",
-		"@controllers": "dist/controllers/",
-    "@middlewares": "dist/middlewares/"
+		"@utils": "src/utils/",
+		"@libs": "src/libs/",
+		"@controllers": "src/controllers/",
+    "@middlewares": "src/middlewares/"
 	},
 	"keywords": [],
 	"author": "ngtuonghy",

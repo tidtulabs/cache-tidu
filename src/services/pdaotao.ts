@@ -17,12 +17,12 @@ type ExamItem = {
 	href: string;
 	isNew: boolean;
 	pagination?: string;
-  row:number;
+	row: number;
 };
 
 type GetExamListResult = {
 	data: ExamItem[];
-	nextPagination?: string;
+	nextPagination?: string | null;
 };
 
 function parseTitleAndTime(input: string) {
@@ -30,7 +30,7 @@ function parseTitleAndTime(input: string) {
 		.split("\n")
 		.map((part) => part.trim())
 		.filter((part) => part);
-  //console.log(parts);
+	//console.log(parts);
 	//
 	//const regex = /(.*)\(([^)]+)\)\s*\(([^)]+)\)$/s;
 	//const match = input.match(regex);
@@ -42,8 +42,8 @@ function parseTitleAndTime(input: string) {
 	return {
 		//title: match[1].trim() + "(" + match[2].trim() + ")",
 		//time: match[3].split(" ")[0].trim(),
-    title: parts[0],
-    time: parts[1].replace(/[()]/g, ""),
+		title: parts[0],
+		time: parts[1].replace(/[()]/g, ""),
 	};
 }
 
@@ -77,12 +77,12 @@ export const getExamList = async (
 			//};
 
 			const examList: ExamItem = {
-        row: index + 1,
+				row: index + 1,
 				text: "",
 				dateUpload: "",
 				href: "",
 				isNew: false,
-        pagination: endpoint,
+				pagination: endpoint,
 				//pagination: endpoint,
 			};
 
@@ -98,9 +98,14 @@ export const getExamList = async (
 				examList.href = extractEndpoint($(linkElement).attr("href") || "");
 			});
 
-			listResult.nextPagination = extractEndpoint(
-				td.find("a").last().attr("href") || "",
-			);
+			const next = td.find("a").last();
+			if (next.text().includes(">>")) {
+				listResult.nextPagination = extractEndpoint(
+					td.find("a").last().attr("href") || "",
+				);
+			}else{
+        listResult.nextPagination = null;
+      }
 
 			examList.isNew =
 				td.find("img").last().attr("src")?.includes("news.gif") || false;
