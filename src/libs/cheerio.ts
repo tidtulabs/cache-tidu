@@ -26,20 +26,6 @@ const scrapingData = async (endPoint: string): Promise<ScrapingResult> => {
 			data: cheerio.load(data),
 		};
 	} catch (error) {
-		if (axios.isAxiosError(error)) {
-			if (error.code === "ECONNABORTED") {
-				return {
-					success: false,
-					message:
-						"Time out! request took too long to complete. Please try again later.",
-				};
-			} else {
-				return {
-					success: false,
-					message: `An error occurred while connecting to the server DTU. Please try again later! status ${error.code}`,
-				};
-			}
-		}
 		return {
 			success: false,
 			message: "An unexpected error occurred. Please try again later.",

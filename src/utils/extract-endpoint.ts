@@ -1,5 +1,5 @@
 
-const extractEndpoint = (href: string): string =>{
+const normalizeEndpoint = (href: string): string =>{
 	if (!href || typeof href !== "string") {
 		throw new Error("Invalid href: href should be a non-empty string");
 	}
@@ -22,4 +22,4 @@ const extractEndpoint = (href: string): string =>{
 	}
 	throw new Error("Invalid href format");
 }
-export { extractEndpoint };
+export { normalizeEndpoint };

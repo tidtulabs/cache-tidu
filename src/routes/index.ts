@@ -1,5 +1,5 @@
 import { Router } from "express";
-import pdaotaoCached from "./cached-redis";
+import pdaotaoCached from "./cache-redis";
 
 const router: Router = Router();
 

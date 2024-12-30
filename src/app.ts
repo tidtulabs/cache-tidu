@@ -1,27 +1,22 @@
 import express, { Express } from "express";
-import "module-alias/register";
 import "dotenv/config";
 import cors from "cors";
 import routes from "./routes";
+import { logger } from "@libs/winston";
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
 
 app.use(
 	cors({
-		origin: process.env.CLIENT || "http://localhost:8000",
-    optionsSuccessStatus: 200,
+		origin: process.env.CLIENT,
+		optionsSuccessStatus: 200,
 	}),
 );
 
 app.use(express.json());
 app.use("/api/v1", routes);
 
-//app.use(errorHandler);
-
-
-
 app.listen(port, () => {
-	console.log(`[server]: Server is running at http://localhost:${port}`);
-  //console.log(`[server]: Client is running at ${process.env.CLIENT}`);
+  logger.info(`[server]: is running at http://localhost:${port}`);
 });

@@ -1,5 +1,5 @@
 import { scrapingData } from "@libs/cheerio";
-import { extractEndpoint } from "@utils/extract-endpoint";
+import { normalizeEndpoint} from "@utils/extract-endpoint";
 
 //type ExamItem = {
 //	examTitle: string; // Tiêu đề bài thi
@@ -30,18 +30,12 @@ function parseTitleAndTime(input: string) {
 		.split("\n")
 		.map((part) => part.trim())
 		.filter((part) => part);
-	//console.log(parts);
-	//
-	//const regex = /(.*)\(([^)]+)\)\s*\(([^)]+)\)$/s;
-	//const match = input.match(regex);
 
 	if (!parts[0] || !parts[1]) {
 		return { title: null, time: null };
 	}
 
 	return {
-		//title: match[1].trim() + "(" + match[2].trim() + ")",
-		//time: match[3].split(" ")[0].trim(),
 		title: parts[0],
 		time: parts[1].replace(/[()]/g, ""),
 	};
@@ -95,17 +89,17 @@ export const getExamList = async (
 				//examList.examLink = extractEndpoint($(linkElement).attr("href") || "");
 				examList.text = t.title || "";
 				examList.dateUpload = t.time || "";
-				examList.href = extractEndpoint($(linkElement).attr("href") || "");
+				examList.href = normalizeEndpoint($(linkElement).attr("href") || "");
 			});
 
 			const next = td.find("a").last();
 			if (next.text().includes(">>")) {
-				listResult.nextPagination = extractEndpoint(
+				listResult.nextPagination = normalizeEndpoint(
 					td.find("a").last().attr("href") || "",
 				);
-			}else{
-        listResult.nextPagination = null;
-      }
+			} else {
+				listResult.nextPagination = null;
+			}
 
 			examList.isNew =
 				td.find("img").last().attr("src")?.includes("news.gif") || false;
