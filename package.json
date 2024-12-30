@@ -10,10 +10,10 @@
 		"dev": "nodemon src/app.ts"
 	},
 	"_moduleAliases": {
-		"@utils": "src/utils/",
-		"@libs": "src/libs/",
-		"@controllers": "src/controllers/",
-    "@middlewares": "src/middlewares/"
+		"@utils": "dist/utils/",
+		"@libs": "dist/libs/",
+		"@controllers": "dist/controllers/",
+    "@middlewares": "dist/middlewares/"
 	},
 	"keywords": [],
 	"author": "ngtuonghy",
