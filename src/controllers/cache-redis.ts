@@ -72,12 +72,17 @@ export const cachedRedis = async (req: Request, res: Response) => {
 
 		logger.info("create cache redis successfull");
 
-		return res
-			.status(204)
-			.json({ success: true, message: "create cache redis successfull" });
-
+		res.status(200).json({
+			success: true,
+			message: "create cache redis successfull",
+			data: null,
+		});
 	} catch (error: any) {
 		logger.error(error);
-		return res.status(500).json({ success: false, message: error.message });
+		res.status(200).json({
+			success: false,
+			message: "create cache redis not successfull",
+			data: null,
+		});
 	}
 };
