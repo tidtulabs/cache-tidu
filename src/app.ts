@@ -3,6 +3,7 @@ import "dotenv/config";
 import cors from "cors";
 import routes from "./routes";
 import { logger } from "@libs/winston";
+import { redis } from "@libs/redis";
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
@@ -18,5 +19,10 @@ app.use(express.json());
 app.use("/api/v1", routes);
 
 app.listen(port, () => {
-  logger.info(`[server]: is running at http://localhost:${port}`);
+	redis.connect().then(() => {
+		logger.info("[redis]: is connected");
+	}).catch((err) => {
+    logger.error(`[redis]: ${err}`);
+  })
+	logger.info(`[server]: is running at http://localhost:${port}`);
 });

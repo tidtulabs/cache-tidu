@@ -54,7 +54,6 @@ const Task = async (
 
 export const cachedRedis = async (req: Request, res: Response) => {
 	try {
-		await redis.connect();
 
 		await redis.set("cached:isUpdated", "true", { EX: 180 });
 
@@ -66,9 +65,7 @@ export const cachedRedis = async (req: Request, res: Response) => {
 
 		await redis.set("cached:examList:total", JSON.stringify(task2));
 
-		await redis.del("cached:isUpdated");
-
-		await redis.disconnect();
+		await redis.del("cached:isUpdated");	
 
 		logger.info("create cache redis successfull");
 
