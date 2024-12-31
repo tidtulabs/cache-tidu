@@ -54,15 +54,15 @@ const Task = async (
 
 export const cachedRedis = async (req: Request, res: Response) => {
 	try {
-		redis.connect();
+		await redis.connect();
 
-		await redis.set("cached:isUpdated", "true", { EX: 120 });
+		await redis.set("cached:isUpdated", "true", { EX: 180 });
 
 		const task1 = await Task("", [], 7);
 
-		await redis.set("cached:examList:frequency", JSON.stringify(task1));
-
 		const task2 = await Task(task1.nextPagination, [], 0, true);
+
+		await redis.set("cached:examList:frequency", JSON.stringify(task1));
 
 		await redis.set("cached:examList:total", JSON.stringify(task2));
 
@@ -79,7 +79,7 @@ export const cachedRedis = async (req: Request, res: Response) => {
 		});
 	} catch (error: any) {
 		logger.error(error);
-		res.status(200).json({
+		res.status(500).json({
 			success: false,
 			message: "create cache redis not successfull",
 			data: null,
